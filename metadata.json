@@ -1,0 +1,6 @@
+{
+  "name": "STUDYFLOW – Student Productivity Manager",
+  "description": "Student productivity and assignment deadline manager powered by Firebase Authentication and Cloud Firestore.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

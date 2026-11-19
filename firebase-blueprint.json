@@ -1,0 +1,126 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated student profile metadata for STUDYFLOW.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Authentication user UID.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Student display name.",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Optional avatar URL from Google Auth.",
+          "minLength": 0,
+          "maxLength": 500
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the profile was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the profile was last updated."
+        }
+      },
+      "required": ["uid", "displayName", "photoURL", "createdAt", "updatedAt"]
+    },
+    "Assignment": {
+      "title": "Assignment",
+      "description": "A student coursework assignment tracked in STUDYFLOW.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "description": "UID of the student who owns the assignment.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "title": {
+          "type": "string",
+          "description": "Assignment title.",
+          "minLength": 1,
+          "maxLength": 140
+        },
+        "subject": {
+          "type": "string",
+          "description": "Course or subject name.",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed notes or submission requirements.",
+          "minLength": 0,
+          "maxLength": 2000
+        },
+        "dueDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Calendar due date in YYYY-MM-DD format.",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "status": {
+          "type": "string",
+          "description": "Current workflow status.",
+          "enum": ["Pending", "In Progress", "Completed"]
+        },
+        "priority": {
+          "type": "string",
+          "description": "Assignment urgency level.",
+          "enum": ["Low", "Medium", "High"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when last updated."
+        }
+      },
+      "required": [
+        "ownerId",
+        "title",
+        "subject",
+        "description",
+        "dueDate",
+        "status",
+        "priority",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Private student profile documents keyed by Firebase Auth UID."
+    },
+    "/assignments/{assignmentId}": {
+      "schema": {
+        "$ref": "#/entities/Assignment"
+      },
+      "description": "User-owned student assignments partitioned by ownerId."
+    }
+  }
+}
